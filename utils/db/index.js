@@ -9,7 +9,7 @@ switch (env) {
   case "dev":
     DB_URL = config.development.database_url;
     break;
-  case "prod":
+  case "production":
     DB_URL = config.production.database_url;
     break;
   case "test":
