@@ -30,9 +30,9 @@ module.exports = {
     secretKey: process.env.PAYSTACK_PRIVATE_KEY,
     publicKey: process.env.PAYSTACK_PUBLIC_KEY,
   },
-  cloudinary:{
-    cloud_name: process.env.CLOUDIARY_CLOUD_NAME,
+  cloudinary: {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUD_API_SCRET
-  }
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  },
 };

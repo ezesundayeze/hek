@@ -1,7 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const ejs = require("ejs");
 const path = require("path");
 
 // Function for encrypting the password before saving
