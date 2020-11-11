@@ -1,7 +1,7 @@
 const response = require("../../utils/apiResponse");
 const { Store } = require("../../models");
 
-const findOne = async (req, res, next) => {
+const findOneStore = async (req, res, next) => {
   try {
     const { slug } = req.param;
     const store = Store.findOne({ slug: slug });
