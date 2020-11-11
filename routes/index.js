@@ -24,6 +24,7 @@ const { searchProducts } = require("../services/Product/findproduct");
 const updateProduct = require("../services/Product/updateProdcut");
 const createStore = require("../services/Store/createStore");
 const updateStore = require("../services/Store/updateStore");
+const { findOneStore } = require("../services/Store/findStore");
 
 const baseURL = "/api/v1";
 
@@ -119,4 +120,9 @@ router.post(`${baseURL}/store/create`, verifyToken, createStore);
  * Update store
  */
 router.put(`${baseURL}/store/update/:slug`, verifyToken, updateStore);
+
+/*
+ * Update store
+ */
+router.put(`${baseURL}/store/update/:slug`, verifyToken, findOneStore);
 module.exports = router;
