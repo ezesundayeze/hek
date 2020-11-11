@@ -18,6 +18,5 @@ module.exports = {
   Category: mongoose.model("Category", categorySchema()),
   Order: mongoose.model("Order", orderSchema()),
   Product: mongoose.model("Product", productSchema()),
-
   WithdrawalLog: mongoose.model("WithdrawalLog", withdrawalLogSchema()),
 };

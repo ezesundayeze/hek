@@ -1,7 +1,7 @@
 const multer = require("multer");
 const { maxMediaFileSize } = require("./config");
-const  cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage  } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const config = require("./config");
 
 const fileFilter = (req, file, cb) => {
@@ -9,9 +9,6 @@ const fileFilter = (req, file, cb) => {
     if (!["image/jpeg", "image/jpg", "image/png"].includes(file.mimetype)) {
       return cb(new Error("Only jpeg, jpg, png images allowed"));
     }
-
-    console.log(file, "file")
-
     if (req.headers["content-length"] > 2000000) {
       return cb(
         new Error(
@@ -29,21 +26,18 @@ const fileFilter = (req, file, cb) => {
 cloudinary.config({
   cloud_name: config.cloudinary.cloud_name,
   api_key: config.cloudinary.api_key,
-  api_secret: config.cloudinary.api_secret
-})
-
+  api_secret: config.cloudinary.api_secret,
+});
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params:{
+  params: {
     params: {
-      folder: 'hek',
-      allowedFormats: ["jpg", "png", "jpeg" ],
-      transformation: [
-        { width: 262, height: 288, crop: 'scale' }
-    ],
-      format: async (req, file) => 'jpg', // supports promises as well
-      public_id: (req, file) => 'computed-filename-using-request',
+      folder: "hek",
+      allowedFormats: ["jpg", "png", "jpeg"],
+      transformation: [{ width: 262, height: 288, crop: "scale" }],
+      format: async (req, file) => "jpg", // supports promises as well
+      public_id: (req, file) => "computed-filename-using-request",
     },
   },
 });
@@ -51,7 +45,7 @@ const storage = new CloudinaryStorage({
 const imageUpload = multer({
   storage,
   fileFilter,
-}).single("image");
+}).array("images", 6);
 
 module.exports = {
   imageUpload,

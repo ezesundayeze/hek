@@ -1,39 +1,40 @@
 const mongoose = require("mongoose");
-
+const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
+mongoose.plugin(mongoosePaginate);
 
 function productSchema() {
   return Schema(
     {
-    
-    title: {
-        type: String, 
-        required: true
-    },
-    brand: {
-        type: String, 
-        required: true
-    },
-    productType:{ type: String, default: "retail", enum: ["retail", "wholesale"]},
-    size: [ Number ], 
-    store: {
+      title: {
+        type: String,
+        // required: true,
+      },
+      brand: {
+        type: String,
+        // required: true,
+      },
+      productType: {
+        type: String,
+        default: "retail",
+        enum: ["retail", "wholesale"],
+      },
+      size: [Number],
+      store: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Store",
-        required: true,
       },
       category: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: "Category",
       },
       status: {
         type: Boolean,
-        default: true
       },
-      quantity: { type: Number, required: true },
-      price: { type: Number, required: true },
+      quantity: { type: String, required: true },
+      price: { type: String, required: true },
       images: { type: Array, required: true },
-      rating: [ Number ],
+      rating: [Number],
       reviews: [
         {
           comment: { type: String },
@@ -41,7 +42,7 @@ function productSchema() {
         },
       ],
     },
-    
+
     { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
   );
 }
