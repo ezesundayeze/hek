@@ -20,6 +20,7 @@ function storeSchema() {
       address: { type: String, default: null },
       country: { type: String, default: "Nigeria" },
       city: { type: String, default: "Nigeria" },
+      image: { type: String },
       verificationStatus: {
         type: String,
         enum: ["verified", "pending", "unverified"],

@@ -25,6 +25,11 @@ function productSchema() {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Store",
       },
+      owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+
       category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",

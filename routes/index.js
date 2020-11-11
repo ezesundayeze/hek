@@ -22,6 +22,7 @@ const findOneUser = require("../services/User/findOneUser");
 const createProduct = require("../services/Product/createProduct");
 const { searchProducts } = require("../services/Product/findproduct");
 const updateProduct = require("../services/Product/updateProdcut");
+const createStore = require("../services/Store/createStore");
 
 const baseURL = "/api/v1";
 
@@ -94,7 +95,7 @@ router.post(
 /*
  * Create a new product
  */
-router.post(`${baseURL}/product/create`, createProduct);
+router.post(`${baseURL}/product/create`, verifyToken, createProduct);
 
 /*
  * Search products
@@ -107,5 +108,10 @@ router.get(
 );
 
 router.put(`${baseURL}/product/update/:slug`, verifyToken, updateProduct);
+
+/*
+ * Create a new store
+ */
+router.post(`${baseURL}/store/create`, verifyToken, createStore);
 
 module.exports = router;

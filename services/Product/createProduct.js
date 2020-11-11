@@ -3,7 +3,7 @@ const response = require("../../utils/apiResponse");
 const { imageUpload } = require("../../utils/upload");
 const { formDataValidation, Schemas } = require("../../utils/validation/joi");
 
-const createProduct = async (req, res, next) => {
+const createProduct = async (verifiedToken, req, res, next) => {
   imageUpload(req, res, async (err) => {
     if (err) {
       console.log(err);
@@ -20,6 +20,7 @@ const createProduct = async (req, res, next) => {
       }
 
       const payload = req.body;
+      payload.owner = verifiedToken._id;
       payload.images = req.files;
       const product = new Product(payload);
       const newProduct = await product.save();

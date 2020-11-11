@@ -85,6 +85,14 @@ const Schemas = {
     images: joi.string(),
   }),
 
+  storeSchema: joi.object().keys({
+    name: joi.string(),
+    address: joi.string(),
+    country: joi.string(),
+    city: joi.string(),
+    image: joi.string(),
+  }),
+
   editProductSchema: joi.object().keys({
     title: joi.string(),
     description: joi.string(),
