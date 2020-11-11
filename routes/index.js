@@ -21,6 +21,7 @@ const { verifyUser } = require("../services/User/signIn");
 const findOneUser = require("../services/User/findOneUser");
 const createProduct = require("../services/Product/createProduct");
 const { searchProducts } = require("../services/Product/findproduct");
+const updateProduct = require("../services/Product/updateProdcut");
 
 const baseURL = "/api/v1";
 
@@ -93,7 +94,6 @@ router.post(
 /*
  * Create a new product
  */
-
 router.post(`${baseURL}/product/create`, createProduct);
 
 /*
@@ -105,5 +105,7 @@ router.get(
   queryParamValidation(Schemas.productSearchSchema),
   searchProducts
 );
+
+router.put(`${baseURL}/product/update/:slug`, verifyToken, updateProduct);
 
 module.exports = router;

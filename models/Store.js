@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const slug = require("mongoose-slug-generator");
 
+mongoose.plugin(slug);
 const Schema = mongoose.Schema;
 
 function storeSchema() {
@@ -7,13 +9,14 @@ function storeSchema() {
     {
       name: {
         type: String,
-        require: true
+        require: true,
       },
       owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         default: null,
       },
+      slug: { type: String, slug: "name", unique: true },
       address: { type: String, default: null },
       country: { type: String, default: "Nigeria" },
       city: { type: String, default: "Nigeria" },
@@ -22,7 +25,6 @@ function storeSchema() {
         enum: ["verified", "pending", "unverified"],
         default: "unverified",
       },
-
     },
     { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
   );

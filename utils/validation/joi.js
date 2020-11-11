@@ -84,6 +84,19 @@ const Schemas = {
     store: joi.string(),
     images: joi.string(),
   }),
+
+  editProductSchema: joi.object().keys({
+    title: joi.string(),
+    description: joi.string(),
+    price: joi.number(),
+    category: joi.string(),
+    productType: joi.string().allow("retail", "wholesale").default("retail"),
+    size: joi.string(),
+    brand: joi.string(),
+    quantity: joi.number(),
+    store: joi.string(),
+    images: joi.string(),
+  }),
   stringParammSchema: joi.object().keys({
     param: joi
       .string()

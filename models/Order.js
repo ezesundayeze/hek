@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 
 function orderSchema() {
   return Schema(
     {
-      products: {type: Array },
+      products: { type: Array },
       store: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Store",
         default: null,
       },
+
       customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

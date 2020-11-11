@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
-mongoose.plugin(mongoosePaginate);
+const slug = require("mongoose-slug-generator");
+mongoose.plugin(slug);
 
 function productSchema() {
   return Schema(
@@ -14,6 +14,7 @@ function productSchema() {
         type: String,
         // required: true,
       },
+      slug: { type: String, slug: "title", unique: true },
       productType: {
         type: String,
         default: "retail",
