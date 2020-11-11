@@ -6,7 +6,6 @@ const { formDataValidation, Schemas } = require("../../utils/validation/joi");
 const createStore = async (verifiedToken, req, res, next) => {
   singleUpload(req, res, async (err) => {
     if (err) {
-      console.log(err);
       return res.status(500).json(response.validation(err.message, 500));
     }
 
