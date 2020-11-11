@@ -28,13 +28,13 @@ const updateProduct = async (verifiedToken, req, res, next) => {
         slug: params.slug,
       }).populate("store");
 
-      if (findProduct?.store?.owner !== verifiedToken._id) {
+      if (findProduct?.owner != verifiedToken._id) {
         return res.status(401).json(response.error("Unauthorized Access", 401));
       }
 
-      if ((payload.images.length = 0)) {
+      if (payload?.images?.length == 0 || undefined) {
         const product = await Product.findOneAndUpdate(
-          { slug: param.slug },
+          { slug: params.slug },
           { $set: payload },
           { new: true }
         );
@@ -43,7 +43,7 @@ const updateProduct = async (verifiedToken, req, res, next) => {
 
       payload.images = req.files;
       const product = await Product.findOneAndUpdate(
-        { slug: param.slug },
+        { slug: params.slug },
         { $set: payload },
         { new: true }
       );
