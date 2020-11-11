@@ -12,5 +12,5 @@ const findOne = async (req, res, next) => {
 };
 
 module.exports = {
-  findOne,
+  findOneStore,
 };
