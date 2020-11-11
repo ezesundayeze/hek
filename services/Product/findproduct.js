@@ -3,8 +3,8 @@ const { Product } = require("../../models");
 
 const findOne = async (req, res, next) => {
   try {
-    const id = req.param;
-    const product = Product.findById({ _id: id });
+    const { slug } = req.param;
+    const product = Product.findOne({ slug: slug });
     return res.status(200).json(response.success("Ok", product, 200));
   } catch (error) {
     next(error.message);
