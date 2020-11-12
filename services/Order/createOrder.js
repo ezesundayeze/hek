@@ -1,0 +1,46 @@
+const { Order, User, Product } = require("../../models");
+const response = require("../../utils/apiResponse");
+const { initializePayment } = require("../Payment/paystack");
+
+const createOrder = async (verifiedToken, req, res, next) => {
+  try {
+    const payload = req.body;
+    // get customer email and confirm that user exists
+    const user = await User.findOne({ _id: verifiedToken._id });
+    if (!user) {
+      return res.status(404).json(response.error("User does not exist", 404));
+    }
+
+    //create a new order
+    payload.customer = verifiedToken._id;
+    const order = new Order(payload);
+
+    // get order amount
+    let amount = 0;
+    await Promise.all(
+      payload.products.map(async (productId) => {
+        let p = await Product.findById(productId);
+        amount += Number(p.price);
+      })
+    );
+
+    // initiate payment
+    const initPayment = await initializePayment({
+      email: user.email,
+      amount: amount,
+      reference: order._id,
+    });
+
+    // add payment link to the order
+    order.paymentURL = initPayment.authorization_url;
+
+    //  save order
+    await order.save();
+
+    return res.status(201).json(response.success("OK", order, 201));
+  } catch (error) {
+    next(error.message);
+  }
+};
+
+module.exports = createOrder;
