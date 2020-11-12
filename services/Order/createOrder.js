@@ -39,6 +39,7 @@ const createOrder = async (verifiedToken, req, res, next) => {
 
     return res.status(201).json(response.success("OK", order, 201));
   } catch (error) {
+    console.log(error);
     next(error.message);
   }
 };
