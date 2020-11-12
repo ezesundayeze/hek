@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { paystack } = require("../../utils/config");
-const { Wallet, Transaction, Invoice } = require("../../models");
+const { Wallet, Transaction, Invoice, Order } = require("../../models");
 const response = require("../../utils/apiResponse");
 const { User } = require("../../models");
 const sendEmail = require("../../utils/emailer");
@@ -11,29 +11,20 @@ axios.defaults.headers.common = {
   "Content-Type": "application/json",
 };
 
-const initializePayment = async (verifiedToken, req, res, next) => {
-  const data = req.body;
-  data.reference = data.transactionId;
-  delete data.transactionId;
-
-  const transaction = Transaction.findById({ _id: data.reference });
-  if (!transaction) {
-    return res
-      .status(404)
-      .json(response.success("Transaction Does not exist", 404));
-  }
-
+/**
+ *  Initialize Pastack payment
+ * @param {*} data - contains, @customer, @email, @amount and @reference
+ *
+ */
+const initializePayment = async (data) => {
   try {
-    const init = axios
-      .post("https://api.paystack.co/transaction/initialize", data)
-      .then((result) => {
-        return res.status(200).json(response.success("OK", result.data, 200));
-      })
-      .catch((error) => {
-        next(error);
-      });
+    const init = await axios.post(
+      "https://api.paystack.co/transaction/initialize",
+      data
+    );
+    return init.data.data;
   } catch (error) {
-    next(error);
+    return error;
   }
 };
 
