@@ -30,6 +30,7 @@ const sendEmail = async (email, subject, payload, template) => {
     transporter.sendMail(options(), (error, info) => {
       console.log(info);
       if (error) {
+        console.log(error);
         return error;
       } else {
         return res.status(200).json({
@@ -38,6 +39,7 @@ const sendEmail = async (email, subject, payload, template) => {
       }
     });
   } catch (error) {
+    console.log(error);
     return error;
   }
 };

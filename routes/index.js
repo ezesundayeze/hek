@@ -25,7 +25,7 @@ const updateProduct = require("../services/Product/updateProdcut");
 const createStore = require("../services/Store/createStore");
 const updateStore = require("../services/Store/updateStore");
 const { findOneStore } = require("../services/Store/findStore");
-const { initializePayment } = require("../services/Payment/paystack");
+const { initializePayment, webhook } = require("../services/Payment/paystack");
 const createOrder = require("../services/Order/createOrder");
 
 const baseURL = "/api/v1";
@@ -133,5 +133,7 @@ router.get(`${baseURL}/store/retrieve/:slug`, findOneStore);
  */
 
 router.post(`${baseURL}/order/create`, verifyToken, createOrder);
+
+router.post(`${baseURL}/paystack/webhook`, webhook);
 
 module.exports = router;

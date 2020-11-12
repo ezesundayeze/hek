@@ -1,6 +1,12 @@
 const axios = require("axios");
 const { paystack } = require("../../utils/config");
-const { Wallet, Transaction, Invoice, Order } = require("../../models");
+const {
+  Wallet,
+  Transaction,
+  Invoice,
+  Order,
+  Product,
+} = require("../../models");
 const response = require("../../utils/apiResponse");
 const { User } = require("../../models");
 const sendEmail = require("../../utils/emailer");
@@ -46,93 +52,38 @@ const webhook = async (req, res, next) => {
             email: result.data.data.customer.email,
           });
 
-          //   Set the transaction to paid:
-          const transaction = await Transaction.findById({
-            _id: ObjectId(result.data.data.reference),
+          // find order
+
+          const order = await Order.findById({
+            _id: result.data.data.reference,
           });
 
-          if (transaction && !transaction.paid) {
-            //   Creit User wallet
-            const wallet = await Wallet.findOne({ user: user._id });
-            const amount = wallet.balance + result.data.data.amount;
-            wallet.balance = amount;
-
-            const newWallet = await wallet.save();
-
-            //   Set transaction to paid
-            transaction.paid = true;
-            const newTransaction = await transaction.save();
-
-            // create a receipt for this payment
-            const invoice = new Invoice({
-              merchant: transaction.merchant,
-              buyer: transaction.buyer,
-              transactionId: result.data.data.reference,
-              date: new Date(),
-              status: (() => {
-                if (
-                  Number(result.data.data.amount) ==
-                  Number(transaction.terms.totalAmount)
-                ) {
-                  return "paid";
-                }
-
-                if (
-                  Number(transaction.terms.totalAmount) >
-                  Number(result.data.data.amount)
-                ) {
-                  return "part";
-                }
-              })(),
-              amountPaid: Number(result.data.data.amount),
-              balance:
-                Number(transaction.terms.totalAmount) -
-                Number(result.data.data.amount),
-              reason: transaction.terms.title,
-              total: Number(transaction.terms.totalAmount),
-            });
-
-            // Send Email of Transaction
-            const merchant = await User.findById({
-              _id: newTransaction.merchant,
-            });
-            const buyer = await User.findById({
-              _id: newTransaction.buyer,
-            });
-
-            await sendEmail(
-              merchant.email,
-              "GuardedPay: Payment Received",
-              {
-                name: merchant.firstName,
-                merchant: transaction.merchant,
-                buyer: transaction.buyer,
-                amount: transaction.terms.totalAmount,
-                title: transaction.terms.title,
-                description: transaction.terms.description,
-              },
-              "./templates/email/invoice.ejs"
-            );
-            await sendEmail(
-              buyer.email,
-              "GuardedPay: Payment Received",
-              {
-                name: buyer.firstName,
-                merchant: transaction.merchant,
-                buyer: transaction.buyer,
-                amount: transaction.terms.totalAmount,
-                title: transaction.terms.title,
-                description: transaction.terms.description,
-              },
-              "./templates/email/invoice.ejs"
-            );
-
-            const newInvoice = await invoice.save();
-
+          if (!order) {
             return res
-              .status(200)
-              .json(response.success("OK", { invoice: newInvoice }, 200));
+              .status(404)
+              .json(response.error("Order does not exist", 404));
           }
+
+          //set order to paid
+          order.status = "paid";
+          await order.save();
+
+          const products = order.products.map(async (productId) => {
+            const product = await Product.findById({ _id: productId });
+            return product;
+          });
+
+          // send email with order details
+
+          sendEmail(
+            user.email,
+            "HEK:Payment",
+            {
+              name: user.firstName,
+              products: products,
+            },
+            "../templates/email/order.handlebars"
+          );
 
           return res.status(200).json(response.success("OK", null, 200));
         }
