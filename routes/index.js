@@ -124,5 +124,5 @@ router.put(`${baseURL}/store/update/:slug`, verifyToken, updateStore);
 /*
  * Update store
  */
-router.put(`${baseURL}/store/retrieve/:slug`, verifyToken, findOneStore);
+router.get(`${baseURL}/store/retrieve/:slug`, findOneStore);
 module.exports = router;
