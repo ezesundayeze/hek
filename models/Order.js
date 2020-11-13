@@ -13,6 +13,7 @@ function orderSchema() {
       },
       paymentURL: { type: String, default: null },
       shipping: {
+        name: { type: String },
         address: { type: String },
         country: { type: String },
         state: { type: String },
