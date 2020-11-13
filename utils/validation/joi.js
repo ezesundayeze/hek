@@ -93,6 +93,19 @@ const Schemas = {
     image: joi.string(),
   }),
 
+  orderSchema: joi.object().keys({
+    products: joi
+      .array()
+      .items({
+        id: joi
+          .string()
+          .regex(/^[0-9a-fA-F]{24}$/)
+          .required(),
+        quantity: joi.number(),
+      })
+      .required(),
+  }),
+
   editStoreSchema: joi.object().keys({
     name: joi.string(),
     address: joi.string(),

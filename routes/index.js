@@ -27,6 +27,7 @@ const updateStore = require("../services/Store/updateStore");
 const { findOneStore } = require("../services/Store/findStore");
 const { initializePayment, webhook } = require("../services/Payment/paystack");
 const createOrder = require("../services/Order/createOrder");
+const findOneOrder = require("../services/Order/findOrder");
 
 const baseURL = "/api/v1";
 
@@ -132,7 +133,14 @@ router.get(`${baseURL}/store/retrieve/:slug`, findOneStore);
  * Generate transaction payment link
  */
 
-router.post(`${baseURL}/order/create`, verifyToken, createOrder);
+router.post(
+  `${baseURL}/order/create`,
+  bodyValidation(Schemas.orderSchema),
+  verifyToken,
+  createOrder
+);
+
+router.get(`${baseURL}/order/retrieve/:id`, findOneOrder);
 
 router.post(`${baseURL}/paystack/webhook`, webhook);
 
