@@ -14,6 +14,7 @@ function productSchema() {
         type: String,
         // required: true,
       },
+      description: { type: String },
       slug: { type: String, slug: "title", unique: true },
       productType: {
         type: String,

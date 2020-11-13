@@ -53,10 +53,35 @@ const webhook = async (req, res, next) => {
           });
 
           // find order
-
           const order = await Order.findById({
             _id: result.data.data.reference,
           });
+
+          console.log(order);
+          let total = 0;
+          let subtotal = 0;
+
+          const products = await Promise.all(
+            order.products.map(async (product) => {
+              let productOne = await Product.findById({ _id: product.id });
+
+              // update product quantity
+              productOne.quantity =
+                Number(productOne.quantity) - Number(product.quantity);
+              await productOne.save();
+
+              subtotal += Number(productOne.price) * product.quantity;
+              return {
+                product: productOne,
+                quantity: product.quantity,
+              };
+            })
+          );
+
+          // total includes fees
+          //assuming delivery is 500 naira
+          let delivery = 500;
+          total = subtotal + delivery;
 
           if (!order) {
             return res
@@ -66,12 +91,10 @@ const webhook = async (req, res, next) => {
 
           //set order to paid
           order.status = "paid";
+
           await order.save();
 
-          const products = order.products.map(async (productId) => {
-            const product = await Product.findById({ _id: productId });
-            return product;
-          });
+          console.log(products);
 
           // send email with order details
 
@@ -81,6 +104,8 @@ const webhook = async (req, res, next) => {
             {
               name: user.firstName,
               products: products,
+              subtotal: subtotal,
+              total: total,
             },
             "../templates/email/order.handlebars"
           );
@@ -89,9 +114,12 @@ const webhook = async (req, res, next) => {
         }
       })
       .catch((error) => {
+        console.log(error.message);
         next(error);
       });
   } catch (error) {
+    console.log(error.message);
+
     next(error);
   }
 };

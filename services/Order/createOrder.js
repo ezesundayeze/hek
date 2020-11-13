@@ -18,9 +18,14 @@ const createOrder = async (verifiedToken, req, res, next) => {
     // get order amount
     let amount = 0;
     await Promise.all(
-      payload.products.map(async (productId) => {
-        let p = await Product.findById(productId);
-        amount += Number(p.price);
+      payload.products.map(async (product) => {
+        let p = await Product.findById(product.id);
+        if (product.quantity > p.quantity) {
+          return res
+            .status(422)
+            .json(response.error(" Quantity requested is not available!"));
+        }
+        amount += Number(p.price) * product.quantity;
       })
     );
 
