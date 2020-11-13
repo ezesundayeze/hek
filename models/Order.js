@@ -12,7 +12,14 @@ function orderSchema() {
         default: null,
       },
       paymentURL: { type: String, default: null },
+      shipping: {
+        address: { type: String },
+        country: { type: String },
+        state: { type: String },
+        postalCode: { type: String },
+      },
     },
+
     { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
   );
 }
