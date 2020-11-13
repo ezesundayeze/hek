@@ -94,6 +94,16 @@ const Schemas = {
   }),
 
   orderSchema: joi.object().keys({
+    shipping: joi
+      .object()
+      .keys({
+        name: joi.string().required(),
+        address: joi.string().required(),
+        country: joi.string().required(),
+        state: joi.string().required(),
+        postalCode: joi.string().required(),
+      })
+      .required(),
     products: joi
       .array()
       .items({
@@ -152,6 +162,7 @@ const Schemas = {
       }),
     status: joi.string().valid(...["active", "inactive"]),
   }),
+
   updateUserSchema: joi.object().keys({
     firstName: joi.string().min(2),
     lastName: joi.string().min(2),
