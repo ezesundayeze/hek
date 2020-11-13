@@ -11,11 +11,19 @@ const createOrder = async (verifiedToken, req, res, next) => {
       return res.status(404).json(response.error("User does not exist", 404));
     }
 
-    //create a new order
-    payload.customer = verifiedToken._id;
-    const order = new Order(payload);
+    //confirm product exist
+    await Promise.all(
+      payload.products.map(async (product) => {
+        let p = await Product.findById(product.id);
+        if (!p) {
+          return res
+            .status(422)
+            .json(response.error("One or more products does not exist"));
+        }
+      })
+    );
 
-    // get order amount
+    //
     let amount = 0;
     await Promise.all(
       payload.products.map(async (product) => {
@@ -23,11 +31,16 @@ const createOrder = async (verifiedToken, req, res, next) => {
         if (product.quantity > p.quantity) {
           return res
             .status(422)
-            .json(response.error(" Quantity requested is not available!"));
+            .json(response.error("Quantity requested is not available!"));
         }
         amount += Number(p.price) * product.quantity;
       })
     );
+
+    //create a new order
+    payload.customer = verifiedToken._id;
+
+    const order = new Order(payload);
 
     // initiate payment
     const initPayment = await initializePayment({
@@ -44,7 +57,6 @@ const createOrder = async (verifiedToken, req, res, next) => {
 
     return res.status(201).json(response.success("OK", order, 201));
   } catch (error) {
-    console.log(error);
     next(error.message);
   }
 };
