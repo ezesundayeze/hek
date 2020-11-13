@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width"/>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width" />
 
-    <!-- For development, pass document through inliner -->
+        <!-- For development, pass document through inliner -->
 
-    <style type="text/css">
+        <style type="text/css">
     * { margin: 0; padding: 0; font-size: 100%; font-family: 'Avenir Next', "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; line-height: 1.65; }
 img { max-width: 100%; margin: 0 auto; display: block; }
 body, .body-wrap { width: 100% !important; height: 100%; background: #f8f8f8; }
@@ -48,62 +48,99 @@ p, ul, ol { font-size: 16px; font-weight: normal; margin-bottom: 20px; }
   hyphens: auto;
 }
     </style>
-</head>
-<body>
-<table class="body-wrap">
-    <tr>
-        <td class="container">
+    </head>
+    <body>
+        <table class="body-wrap">
+            <tr>
+                <td class="container">
 
-            <!-- Message start -->
-            <table>
-                <tr>
-                    <td align="center" class="masthead">
-        
-                        <img src="https://s-i.huffpost.com/gen/3971736/images/n-HAPPY-PEOPLE-628x314.jpg" alt="Welcome">
+                    <!-- Message start -->
+                    <table>
+                        <tr>
+                            <td align="center" class="masthead">
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="content">
+                                <img
+                                    src="https://s-i.huffpost.com/gen/3971736/images/n-HAPPY-PEOPLE-628x314.jpg"
+                                    alt="Welcome">
 
-                        <h2>Hi {{name}},</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="content">
 
-                        <h2>Here is your order details: </h2>
-                                {{#each products}}
-                                    <li>{{title}}<div class="view-verse-text">{{price}}</div>
-                                {{/each}}
-                        
-                           <table>
-                               <tr>
-                                   <td>
-                                        <p class="url"> <a href="#">If you have any question do not hesitate to send an email to hi@GuardedPay.com</a></p>
-                                   </td>
-                               </tr>
-                           </table>
-                        <p><em>– Eze</em></p>
+                                <h2>Hi {{name}},</h2>
 
-                    </td>
-                </tr>
-            </table>
+                                <h2></h2>
 
-        </td>
-    </tr>
-    <tr>
-        <td class="container">
+                                <table>
+                                    <caption>Here is your order detail:
+                                    </caption>
 
-            <!-- Message start -->
-            <table>
-                <tr>
-                    <td class="content footer" align="center">
-                        <p>Powered by <a href="https://www.guardedpay.com">GuardedPay.com</a>, Abuja, Nigeria</p>
-                        <p><a href="mailto:hi@guardedpay.com">hi@GuardedPay.com</a> |<phone>
-                            09067005754</phone> | <a href="#">Unsubscribe</a></p>
-                    </td>
-                </tr>
-            </table>
+                                    <tbody>
+                                        <tr>
+                                            <th>Name </th>
+                                            <th>Qty.</th>
+                                            <th>Cost</th>
+                                            <th>Description</th>
+                                        </tr>
+                                        {{#each products}}
+                                        <tr>
+                                            <td>{{this.product.title}}</td>
+                                            <td>{{this.quantity}}</td>
+                                            <td>{{this.product.price}}</td>
+                                            <td>{{this.product.description}}</td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="3">Subtotal</th>
+                                            <td> N {{subtotal}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3">Grand Total</th>
+                                            <td>N {{total}}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
 
-        </td>
-    </tr>
-</table>
-</body>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <p class="url"> <a href="#">If you
+                                                    have any question do not
+                                                    hesitate to send an email to
+                                                    hi@GuardedPay.com</a></p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <p><em>– Eze</em></p>
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="container">
+
+                    <!-- Message start -->
+                    <table>
+                        <tr>
+                            <td class="content footer" align="center">
+                                <p>Powered by <a
+                                        href="https://www.guardedpay.com">GuardedPay.com</a>,
+                                    Abuja, Nigeria</p>
+                                <p><a href="mailto:hi@guardedpay.com">hi@GuardedPay.com</a>
+                                    |<phone>
+                                        09067005754</phone> | <a href="#">Unsubscribe</a></p>
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+    </body>
 </html>
