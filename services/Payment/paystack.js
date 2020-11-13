@@ -38,7 +38,7 @@ const webhook = async (req, res, next) => {
   try {
     const data = req.body.data;
     const url = `https://api.paystack.co/transaction/verify/${data.reference}`;
-    const verifyPayment = axios
+    axios
       .get(url)
       .then(async (result) => {
         if (result.data.data.reference != data.reference) {
