@@ -30,6 +30,7 @@ const createOrder = require("../services/Order/createOrder");
 const findOneOrder = require("../services/Order/findOrder");
 const createCategory = require("../services/Category/createCategory");
 const findOneCategory = require("../services/Category/findCategory");
+const addReview = require("../services/Review/review");
 
 const baseURL = "/api/v1";
 
@@ -142,7 +143,11 @@ router.post(
   createOrder
 );
 
-router.get(`${baseURL}/order/retrieve/:id`, findOneOrder);
+router.get(
+  `${baseURL}/order/retrieve/:id`,
+  paramValidation(Schemas.idSchema, "id"),
+  findOneOrder
+);
 
 /*
  * Create Category
@@ -153,6 +158,14 @@ router.post(
   bodyValidation(Schemas.categorySchema),
   verifyToken,
   createCategory
+);
+
+router.post(
+  `${baseURL}/product/review/:productId`,
+  paramValidation(Schemas.idSchema, "productId"),
+  bodyValidation(Schemas.reviewSchema),
+  verifyToken,
+  addReview
 );
 
 router.get(`${baseURL}/category/retrieve/:slug`, findOneCategory);

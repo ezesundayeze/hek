@@ -98,6 +98,15 @@ const Schemas = {
     description: joi.string(),
   }),
 
+  reviewSchema: joi.object().keys({
+    comment: joi.string(),
+    rate: joi.number(),
+    orderId: joi
+      .string()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .required(),
+  }),
+
   orderSchema: joi.object().keys({
     shipping: joi
       .object()
