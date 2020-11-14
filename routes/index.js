@@ -28,6 +28,8 @@ const { findOneStore } = require("../services/Store/findStore");
 const { initializePayment, webhook } = require("../services/Payment/paystack");
 const createOrder = require("../services/Order/createOrder");
 const findOneOrder = require("../services/Order/findOrder");
+const createCategory = require("../services/Category/createCategory");
+const findOneCategory = require("../services/Category/findCategory");
 
 const baseURL = "/api/v1";
 
@@ -141,6 +143,19 @@ router.post(
 );
 
 router.get(`${baseURL}/order/retrieve/:id`, findOneOrder);
+
+/*
+ * Create Category
+ */
+
+router.post(
+  `${baseURL}/category/create`,
+  bodyValidation(Schemas.categorySchema),
+  verifyToken,
+  createCategory
+);
+
+router.get(`${baseURL}/category/retrieve/:slug`, findOneCategory);
 
 router.post(`${baseURL}/paystack/webhook`, webhook);
 
