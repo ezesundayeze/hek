@@ -1,5 +1,5 @@
 const { Product, Order } = require("../../models");
-const apiResponse = require("../../utils/apiResponse");
+const response = require("../../utils/apiResponse");
 
 const addReview = async (verifiedToken, req, res, next) => {
   try {
@@ -14,7 +14,7 @@ const addReview = async (verifiedToken, req, res, next) => {
     if (!product && !order) {
       return res
         .status(422)
-        .json(apiResponse.error("You can only review items you purchased"));
+        .json(response.error("You can only review items you purchased"));
     }
     if (comment) {
       product.reviews.push({ comment, userId: verifiedToken._id });
@@ -29,7 +29,7 @@ const addReview = async (verifiedToken, req, res, next) => {
     return res
       .status(200)
       .json(
-        apiResponse.success(
+        response.success(
           "OK",
           { reviews: newProduct.reviews, ratings: newProduct.rating },
           200
