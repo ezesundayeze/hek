@@ -93,6 +93,11 @@ const Schemas = {
     image: joi.string(),
   }),
 
+  categorySchema: joi.object().keys({
+    title: joi.string(),
+    description: joi.string(),
+  }),
+
   orderSchema: joi.object().keys({
     shipping: joi
       .object()
