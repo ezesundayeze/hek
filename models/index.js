@@ -8,6 +8,7 @@ const withdrawalLogSchema = require("./withdrawalLog");
 const categorySchema = require("./Category");
 const orderSchema = require("./Order");
 const productSchema = require("./product");
+const couponSchema = require("./Coupons");
 
 module.exports = {
   User: mongoose.model("User", userSchema()),
@@ -17,6 +18,7 @@ module.exports = {
   Wallet: mongoose.model("Wallet", walletSchema()),
   Category: mongoose.model("Category", categorySchema()),
   Order: mongoose.model("Order", orderSchema()),
+  Coupon: mongoose.model("Dicount", couponSchema()),
   Product: mongoose.model("Product", productSchema()),
   WithdrawalLog: mongoose.model("WithdrawalLog", withdrawalLogSchema()),
 };
