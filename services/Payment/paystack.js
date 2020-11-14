@@ -57,7 +57,6 @@ const webhook = async (req, res, next) => {
             _id: result.data.data.reference,
           });
 
-          console.log(order);
           let total = 0;
           let subtotal = 0;
 
@@ -94,10 +93,7 @@ const webhook = async (req, res, next) => {
 
           await order.save();
 
-          console.log(products);
-
           // send email with order details
-
           sendEmail(
             user.email,
             "HEK:Payment",
@@ -114,12 +110,9 @@ const webhook = async (req, res, next) => {
         }
       })
       .catch((error) => {
-        console.log(error.message);
         next(error);
       });
   } catch (error) {
-    console.log(error.message);
-
     next(error);
   }
 };
