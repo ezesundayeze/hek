@@ -1,16 +1,9 @@
 const axios = require("axios");
 const { paystack } = require("../../utils/config");
-const {
-  Wallet,
-  Transaction,
-  Invoice,
-  Order,
-  Product,
-} = require("../../models");
+const { Order, Product } = require("../../models");
 const response = require("../../utils/apiResponse");
 const { User } = require("../../models");
 const sendEmail = require("../../utils/emailer");
-const { ObjectId } = require("mongoose").Types;
 
 axios.defaults.headers.common = {
   Authorization: `Bearer ${paystack.secretKey}`,
