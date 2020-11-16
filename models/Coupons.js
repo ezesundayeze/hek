@@ -8,7 +8,7 @@ function couponSchema() {
         type: String,
         require: true,
       },
-      code: { type: String },
+      code: { type: String, unique: true },
       status: { type: String, default: "active" },
       description: {
         type: String,

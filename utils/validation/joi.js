@@ -97,6 +97,10 @@ const Schemas = {
     title: joi.string(),
     description: joi.string(),
   }),
+  couponSchema: joi.object().keys({
+    code: joi.string(),
+    value: joi.number(),
+  }),
 
   reviewSchema: joi.object().keys({
     comment: joi.string(),
@@ -108,6 +112,7 @@ const Schemas = {
   }),
 
   orderSchema: joi.object().keys({
+    coupon: joi.string(),
     shipping: joi
       .object()
       .keys({

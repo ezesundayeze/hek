@@ -5,7 +5,10 @@ const createCoupon = async (verifiedToken, req, res, next) => {
   try {
     const { productId } = req.params;
     const payload = req.body;
-    const product = await Product.findById({ _id: productId });
+    const product = await Product.findById({
+      _id: productId,
+      owner: verifiedToken._id,
+    });
 
     if (!product) {
       return res.status(404).json(response.error("Product not found", 404));
@@ -21,10 +24,15 @@ const createCoupon = async (verifiedToken, req, res, next) => {
           )
         );
     }
-
+    payload.product = productId;
+    const couponCode = await Coupon.findOne({ code: payload.code });
+    if (couponCode) {
+      return res
+        .status(422)
+        .json(response.success("Coupon already exist", 422));
+    }
     const coupon = new Coupon(payload);
     await coupon.save();
-
     return res.status(201).json(response.success("OK", coupon, 201));
   } catch (error) {
     next(error.message);
