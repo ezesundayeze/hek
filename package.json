@@ -1,7 +1,7 @@
 {
   "name": "hek",
   "version": "1.0.0",
-  "description": "High End Kicks; online marketplace for high quality shoes ",
+  "description": "Ecommerce Store ",
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --testTimeout=150000  --detectOpenHandles",
@@ -13,10 +13,10 @@
     "url": "git+https://github.com/ezesundayeze/hek.git"
   },
   "keywords": [
-    "Footwear",
+    "ecommerce",
     "marketplace"
   ],
-  "author": "Guardedpay Team (Arthur, Eze)",
+  "author": "Eze",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ezesundayeze/hek/issues"
