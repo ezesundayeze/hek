@@ -1,6 +1,6 @@
-# The official Highendkicks API
+# HEK is an ecommerce API build with NodeJS and Express
 
-HEK is an ecommerce API build with NodeJS and Express
+
 
 ## Features
 - User account management 
