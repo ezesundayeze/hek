@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { paystack } = require("../../utils/config");
-const { Order, Product } = require("../../models");
+const { Order, Product, Coupon } = require("../../models");
 const response = require("../../utils/apiResponse");
 const { User } = require("../../models");
 const sendEmail = require("../../utils/emailer");
@@ -56,7 +56,6 @@ const webhook = async (req, res, next) => {
           const products = await Promise.all(
             order.products.map(async (product) => {
               let productOne = await Product.findById({ _id: product.id });
-
               // update product quantity
               productOne.quantity =
                 Number(productOne.quantity) - Number(product.quantity);
@@ -73,7 +72,8 @@ const webhook = async (req, res, next) => {
           // total includes fees
           //assuming delivery is 500 naira
           let delivery = 500;
-          total = subtotal + delivery;
+          //discount
+          total = subtotal - order.discount;
 
           if (!order) {
             return res
@@ -95,6 +95,7 @@ const webhook = async (req, res, next) => {
               products: products,
               subtotal: subtotal,
               total: total,
+              discount: order.discount,
             },
             "../templates/email/order.handlebars"
           );
@@ -103,9 +104,12 @@ const webhook = async (req, res, next) => {
         }
       })
       .catch((error) => {
+        console.log(error);
         next(error);
       });
   } catch (error) {
+    console.log(error);
+
     next(error);
   }
 };

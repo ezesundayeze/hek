@@ -26,6 +26,7 @@ async function connection() {
         useUnifiedTopology: true,
         useFindAndModify: false,
         useCreateIndex: true,
+        autoIndex: true,
       },
       (error) => {
         if (error) return new Error("Failed to connect to database");

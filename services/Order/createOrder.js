@@ -1,4 +1,4 @@
-const { Order, User, Product } = require("../../models");
+const { Order, User, Product, Coupon } = require("../../models");
 const response = require("../../utils/apiResponse");
 const { initializePayment } = require("../Payment/paystack");
 
@@ -25,6 +25,7 @@ const createOrder = async (verifiedToken, req, res, next) => {
 
     //
     let amount = 0;
+    let discount = 0;
     await Promise.all(
       payload.products.map(async (product) => {
         let p = await Product.findById(product.id);
@@ -33,13 +34,28 @@ const createOrder = async (verifiedToken, req, res, next) => {
             .status(422)
             .json(response.error("Quantity requested is not available!"));
         }
-        amount += Number(p.price) * product.quantity;
+
+        // check for discount
+        const coupon = await Coupon.findOne({
+          code: payload?.coupon,
+          status: "active",
+          product: product.id,
+        });
+
+        if (coupon) {
+          amount +=
+            (Number(p.price) - Number(coupon.value / 100) * p.price) *
+            product.quantity;
+          discount += Number(coupon.value / 100) * amount * product.quantity;
+        } else {
+          amount += Number(p.price) * product.quantity;
+        }
       })
     );
 
     //create a new order
     payload.customer = verifiedToken._id;
-
+    payload.discount = discount;
     const order = new Order(payload);
 
     // initiate payment

@@ -31,6 +31,7 @@ const findOneOrder = require("../services/Order/findOrder");
 const createCategory = require("../services/Category/createCategory");
 const findOneCategory = require("../services/Category/findCategory");
 const addReview = require("../services/Review/review");
+const createCoupon = require("../services/Dicount");
 
 const baseURL = "/api/v1";
 
@@ -166,6 +167,14 @@ router.post(
   bodyValidation(Schemas.reviewSchema),
   verifyToken,
   addReview
+);
+
+router.post(
+  `${baseURL}/product/coupon/:productId`,
+  paramValidation(Schemas.idSchema, "productId"),
+  bodyValidation(Schemas.couponSchema),
+  verifyToken,
+  createCoupon
 );
 
 router.get(`${baseURL}/category/retrieve/:slug`, findOneCategory);

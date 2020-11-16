@@ -11,6 +11,8 @@ function orderSchema() {
         ref: "User",
         default: null,
       },
+      discount: { type: Number, default: 0 },
+      coupon: { type: String, default: null },
       paymentURL: { type: String, default: null },
       shipping: {
         name: { type: String },
