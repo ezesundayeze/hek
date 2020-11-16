@@ -29,3 +29,11 @@ HEK is an ecommerce API build with NodeJS and Express
     - Create order
     - find order
 
+## Things to come
+
+- Wallet
+- Withdrawals
+- Analytics
+
+### Documentation will be out soon
+
